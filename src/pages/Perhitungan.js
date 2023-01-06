@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Typography,
@@ -6,14 +6,39 @@ import {
   Grid,
   Container,
   Checkbox,
+  TextField,
 } from '@mui/material';
 import { styles } from '../components/styles';
 import DataTable from 'react-data-table-component';
 import axios from '../api/axios';
 import { display } from '@mui/system';
+import { useEffect } from 'react';
+
 
 export const Perhitungan = () => {
+  
+  const [ foundName,setFoundName] = useState('')
+  
+  const handleOnChangeSearch = (e) => {
+    const keyword = e.target.value;
+
+    if (keyword !== '') {
+      const results = users?.filter((data) => {
+        return data?.nama?.toLowerCase().includes(keyword.toLowerCase());
+      });
+      setFoundName(results);
+    } else {
+      setFoundName(users);
+    } 
+
+  };
+  
+  
   const columns = [
+    {
+      name: 'No',
+      selector: (row, index) => index+1,
+    },
     {
       name: 'NISN',
       selector: (row) => row.nisn,
@@ -28,19 +53,19 @@ export const Perhitungan = () => {
       selector: (row) => row.ci_ujian_sekolah,
     },
     {
-      name: 'Ci Rerata Raport',
+      name: 'Ci Raport',
       selector: (row) => row.ci_rerata_raport,
     },
     {
-      name: 'Ci Nilai IPA',
+      name: 'Ci IPA',
       selector: (row) => row.ci_ipa,
     },
     {
-      name: 'Ci Nilai IPS',
+      name: 'Ci IPS',
       selector: (row) => row.ci_ips,
     },
     {
-      name: 'Ci Minat Siswa',
+      name: 'Ci Minat',
       selector: (row) => row.ci_minat,
     },
     {
@@ -71,7 +96,9 @@ export const Perhitungan = () => {
     axios.get(`http://192.168.1.110:8080/normalisasi`).then((res) => {
       const responseUsers = res.data.message;
       setUsers(responseUsers);
+      setFoundName(responseUsers);
       console.log(res);
+
     });
   }, []);
   const isIndeterminate = (indeterminate) => indeterminate;
@@ -91,15 +118,18 @@ export const Perhitungan = () => {
           <Grid container spacing={3} >
             <Grid item xs={12} style={styles.titlePage} >
             </Grid>
-            <Grid item xs={12} sx={{ p: 4,}}>
-              <Typography sx={{backgroundColor:"white", textAlign:"center", mb:1,}} variant="h5" color="initial" fontWeight={600}>DATA PERHITUNGAN</Typography>
+            <Grid item xs={12} sx={{ p: 4}}>
+              <Typography sx={{backgroundColor:"white", textAlign:"center", mb:1, width:"100%"}} variant="h5" color="initial" fontWeight={600}>DATA PERHITUNGAN</Typography>
+              <TextField sx={{mb:1, alignItems:"end", display:"flex", flexDirection:"column"}} placeholder='Search...' size='small'  
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              onChange={handleOnChangeSearch}
+    />
               <DataTable
-                // title="DATA SISWA"
                 columns={columns}
-                data={users}
+                data={foundName}
                 pagination
-                selectableRows
-                selectableRowsComponent={Checkbox}
                 selectableRowsComponentProps={selectableRowsComponentProps}
               />
             </Grid>
@@ -109,3 +139,5 @@ export const Perhitungan = () => {
     </Box>
   );
 };
+
+

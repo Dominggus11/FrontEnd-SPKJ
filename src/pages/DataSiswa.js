@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   Typography,
@@ -6,14 +6,39 @@ import {
   Grid,
   Container,
   Checkbox,
+  TextField,
 } from '@mui/material';
 import { styles } from '../components/styles';
 import DataTable from 'react-data-table-component';
 import axios from '../api/axios';
 import { display } from '@mui/system';
 
+
 export const DataSiswa = () => {
+
+  const [ foundName,setFoundName] = useState('')
+  
+  const handleOnChangeSearch = (e) => {
+    const keyword = e.target.value;
+
+    if (keyword !== '') {
+      const results = users?.filter((data) => {
+        return data?.nama?.toLowerCase().includes(keyword.toLowerCase());
+      });
+      setFoundName(results);
+    } else {
+      setFoundName(users);
+    } 
+
+  };
+  
   const columns = [
+    {
+      name: 'No',
+      selector: (row, index) => index+1,
+      
+    
+    },
     {
       name: 'NISN',
       selector: (row) => row.nisn,
@@ -51,6 +76,7 @@ export const DataSiswa = () => {
     axios.get(`http://192.168.1.110:8080/student`).then((res) => {
       const responseUsers = res.data.message;
       setUsers(responseUsers);
+      setFoundName(responseUsers);
       console.log(res);
     });
   }, []);
@@ -71,15 +97,19 @@ export const DataSiswa = () => {
           <Grid container spacing={3} >
             <Grid item xs={12} style={styles.titlePage} >
             </Grid>
-            <Grid item xs={12} sx={{ p: 4,}}>
-              <Typography sx={{backgroundColor:"white", textAlign:"center", mb:1,}} variant="h5" color="initial" fontWeight={600}>DATA SISWA</Typography>
+            <Grid item xs={12} sx={{ p: 4}}>
+              <Typography sx={{backgroundColor:"white", textAlign:"center", mb:1, width:"100%"}} variant="h5" color="initial" fontWeight={600}>DATA SISWA</Typography>
+              <TextField sx={{mb:1, alignItems:"end", display:"flex", flexDirection:"column"}} placeholder='Search...' size='small'  
+              onClick={(e) => {
+                e.stopPropagation();
+              }}
+              onChange={handleOnChangeSearch}
+              />
               <DataTable
-                // title="DATA SISWA"
                 columns={columns}
-                data={users}
+                data={foundName}
                 pagination
-                selectableRows
-                selectableRowsComponent={Checkbox}
+                selectableRows={false}
                 selectableRowsComponentProps={selectableRowsComponentProps}
               />
             </Grid>
