@@ -20,7 +20,7 @@ function Main() {
         <CssBaseline />
         <AppBarDrawer />
         <Routes>
-          <Route path="/" element={<HomePages />} />
+          <Route path="/dashboard" element={<HomePages />} />
           <Route path="/datasiswa" element={<DataSiswa />} />
           <Route path="/datakriteria" element={<DataKriteria />} />
           <Route path="/perhitungan" element={<Perhitungan />} />
@@ -36,7 +36,7 @@ function App() {
     <>
       <ThemeProvider theme={theme}>
         <Routes>
-          <Route path="/login" element={<Login />}/>
+          <Route path="/" element={<Login />}/>
           <Route path="/*" element={<Main />} />
           
         </Routes>

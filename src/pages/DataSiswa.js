@@ -138,12 +138,15 @@ export const DataSiswa = () => {
 
   const columns = [
     {
-      name: 'ID',
-      selector: (row) =>row.ID,
-      options: {
-        display: false,        
-       }
-    }, 
+      name: 'NO',
+        options: {
+          filter: true,
+          sort: false,
+          customBodyRender: (rowIndex, dataIndex) => (dataIndex.rowIndex + 1 ),
+          setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
+          setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+        }
+    },
     {
       label:'NISN',
       name: 'nisn',
@@ -258,21 +261,20 @@ export const DataSiswa = () => {
               <Typography sx={{backgroundColor:"white", textAlign:"center", mb:1, width:"100%"}} variant="h5" color="initial" fontWeight={600}>DATA SISWA</Typography>
               
               <div>
-              <Button onClick={handleOpenCreate} variant="contained" sx={{float:'left', mb:1, alignItems:"end", display:"flex"}} color="success">
-                <PersonAddAlt1Icon sx={{marginRight:1}}/>  SISWA
-              </Button>
-            
+                <Button onClick={handleOpenCreate} variant="contained" sx={{mb:1, alignItems:"end", display:"flex"}} color="success">
+                  <PersonAddAlt1Icon sx={{marginRight:1}}/>  SISWA
+                </Button>
               </div>
               
-              <TextField sx={{mb:1, alignItems:"end", display:"flex", flexDirection:"column"}} placeholder='Search...' size='small'  
+              {/* <TextField sx={{mb:1, alignItems:"end", display:"flex", flexDirection:"column"}} placeholder='Search...' size='small'  
               onClick={(e) => {
                 e.stopPropagation();
               }}
               onChange={handleOnChangeSearch}
-              />
+              /> */}
               
               <MUIDataTable
-                title={"DATA SISWA"}
+                // title={"DATA SISWA"}
                 data={siswas}
                 columns={columns}
                 // options={options}

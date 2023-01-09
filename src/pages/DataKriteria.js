@@ -5,51 +5,74 @@ import {
   Toolbar,
   Grid,
   Container,
-  Checkbox,
-  TextField,
 } from '@mui/material';
 import { styles } from '../components/styles';
-import DataTable from 'react-data-table-component';
 import axios from '../api/axios';
-import { display } from '@mui/system';
 import CreateIcon from '@mui/icons-material/Create';
-import DeleteIcon from '@mui/icons-material/Delete';
-import { pink } from '@mui/material/colors';
 import MUIDataTable from 'mui-datatables';
+import UpdateCriteria from './UpdateCriteria';
+
 export const DataKriteria = () => {
-
-  const [ foundName,setFoundName] = useState('')
-  
-  const handleOnChangeSearch = (e) => {
-    const keyword = e.target.value;
-
-    if (keyword !== '') {
-      const results = users?.filter((data) => {
-        return data?.nama_kriteria?.toLowerCase().includes(keyword.toLowerCase());
-      });
-      setFoundName(results);
-    } else {
-      setFoundName(users);
-    } 
-
+  const [kriterias, setKriterias] = React.useState([]);
+  const [kriteria, setKriteria] = useState(null);
+  const [openUpdate, setOpenUpdate] = React.useState(false);
+  const handleOpenUpdate = (kriteria) => {
+    setKriteria(kriteria)
+    console.log(kriteria)
+    setOpenUpdate (prev => ({...prev, update: true}))
   };
+  const handleCloseUpdate = () => setOpenUpdate(false); 
+  
+  const isIndeterminate = (indeterminate) => indeterminate;
+  const selectableRowsComponentProps = { indeterminate: isIndeterminate };
+  
+  React.useEffect(() => {
+    axios.get(`${process.env.REACT_APP_BACKEND}/kriteria`).then((res) => {
+      const responseKriterias = res.data.message;
+      setKriterias(responseKriterias);
+    });
+  }, []);
 
+  const handleSubmit = (event, type) => {
+    event.preventDefault()
+    if (type === 'update') {
+      axios.put(`${process.env.REACT_APP_BACKEND}/kriteria/${kriteria.ID}`, {nama: kriteria.nama, bobot: kriteria.bobot})
+        .then(response => {
+          console.log(response.data.data);
+          console.log(kriteria.ID)
+          handleCloseUpdate()
+          // window.location.reload() 
+        });
+
+      console.log(event.target);
+    }
+  }
+
+  const handleChange = (event) => {
+    if (event.target.name === 'nama')(
+      setKriteria(prev => ({...prev, nama: event.target.value}))
+    )
+    else if (event.target.name === 'bobot')(
+      setKriteria(prev => ({...prev, bobot: parseFloat(event.target.value)}))
+    )
+    console.log(event.target.name)
+  }
 
   const columns = [
-    // {
-    //   name: 'Kode',
-    //   selector: (row, index) =>"C"+ (index+1),
-    //   options: {
-    //     sort: false,
-    //     setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
-    //     setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
-    //   },
-    // },
-    
+    {
+      name: 'CODE',
+        options: {
+          filter: true,
+          sort: false,
+          customBodyRender: (rowIndex, dataIndex) => "C"+(dataIndex.rowIndex + 1 ),
+          setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
+          setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+        }
+    },
     {
       label: 'NAMA KRITERIA',
-      name: 'nama_kriteria',
-      selector: (row) => row.nama_kriteria,
+      name: 'nama',
+      selector: (row) => row.nama,
       options: {
         sort: false,
         setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
@@ -58,8 +81,8 @@ export const DataKriteria = () => {
     },
     {
       label: 'BOBOT KRITERIA',
-      name:'bobot_kriteria',
-      selector: (row) => row.bobot_kriteria,
+      name:'bobot',
+      selector: (row) => row.bobot,
       options: {
         sort: false,
         setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
@@ -77,8 +100,7 @@ export const DataKriteria = () => {
         customBodyRenderLite: (dataIndex, rowIndex) => {
           return (
             <div>
-            <button style={{margin: '5px'}}> <CreateIcon color='warning'/></button> 
-            <button> <DeleteIcon sx={{ color: pink[500]}}/></button>
+            <button onClick={() => handleOpenUpdate(kriterias[dataIndex])} style={{margin: '5px'}}> <CreateIcon color='warning'/></button> 
             </div>    
           );
        }
@@ -87,18 +109,6 @@ export const DataKriteria = () => {
     
     
   ];
-
-  const [users, setUsers] = React.useState([]);
-
-  React.useEffect(() => {
-    axios.get(`http://192.168.140.1:8080/kriteria`).then((res) => {
-      const responseUsers = res.data.message;
-      setUsers(responseUsers);
-      setFoundName(responseUsers);
-    });
-  }, []);
-  const isIndeterminate = (indeterminate) => indeterminate;
-  const selectableRowsComponentProps = { indeterminate: isIndeterminate };
 
   return (
     <Box
@@ -118,10 +128,16 @@ export const DataKriteria = () => {
               <Typography sx={{backgroundColor:"white", textAlign:"center", mb:1, width:"100%"}} variant="h5" color="initial" fontWeight={600}>DATA KRITERIA</Typography>
               <MUIDataTable
                 columns={columns}
-                data={users}
-                pagination
-                selectableRowsComponentProps={selectableRowsComponentProps}
+                data={kriterias}
               />
+
+              <UpdateCriteria 
+               handleCloseUpdate={handleCloseUpdate}
+               openUpdate={openUpdate}
+               handleSubmit={handleSubmit}
+               handleChange={handleChange}
+               kriteria = {kriteria}
+               />
             </Grid>
           </Grid>
         </Container>
