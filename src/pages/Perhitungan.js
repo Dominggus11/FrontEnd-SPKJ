@@ -93,7 +93,7 @@ export const Perhitungan = () => {
   const [users, setUsers] = React.useState([]);
 
   React.useEffect(() => {
-    axios.get(`http://192.168.1.110:8080/normalisasi`).then((res) => {
+    axios.get(`http://192.168.140.1:8080/normalisasi`).then((res) => {
       const responseUsers = res.data.message;
       setUsers(responseUsers);
       setFoundName(responseUsers);

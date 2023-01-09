@@ -1,4 +1,4 @@
-import * as React from 'react';
+import React, { useState, useEffect } from "react";
 import { ThemeProvider } from '@mui/material/styles';
 import { Route, Routes } from 'react-router-dom';
 import { Box, CssBaseline } from '@mui/material';
@@ -11,6 +11,7 @@ import { theme } from './components/theme';
 import '@fontsource/inter';
 import HomePages from './pages/HomePages';
 import { DataKriteria } from './pages/DataKriteria';
+import CreateSiswa from './pages/CreateSiswa';
 
 function Main() {
   return (
