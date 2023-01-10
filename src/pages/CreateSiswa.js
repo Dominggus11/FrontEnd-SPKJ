@@ -16,7 +16,8 @@ const style = {
   bgcolor: 'background.paper',
   boxShadow: 24,
   p: 4,
-  textAlign:'center'
+  textAlign:'center',
+  borderRadius:'10px',
 };
 function CreateSiswa({handleCloseCreate, openCreate, handleSubmit, siswa, handleChange}) {
   

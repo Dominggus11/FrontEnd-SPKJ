@@ -5,12 +5,9 @@ import {
   Toolbar,
   Grid,
   Container,
-  TextField,
   Button,
-  Alert,
 } from '@mui/material';
 import { styles } from '../components/styles';
-import DataTable from 'react-data-table-component';
 import axios from '../api/axios';
 import CreateIcon from '@mui/icons-material/Create';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -22,50 +19,34 @@ import MUIDataTable from "mui-datatables";
 import DeleteSiswa from './DeleteSiswa';
 
 export const DataSiswa = () => {
-  React.useEffect(() => {
-		const token = localStorage.getItem('jwtToken');
-		if (!token) {
-      // Arahkan ke halaman login jika token tidak ada di local storage
-      window.alert("Login Dulu");
-      window.location.href = '/';
-		}
-    else{
-        
-    }
-	}, []);
-  const isIndeterminate = (indeterminate) => indeterminate;
-  const selectableRowsComponentProps = { indeterminate: isIndeterminate };
   const [siswas, setSiswas] = React.useState([]);
   const [siswa, setSiswa] = useState(null);
-  const [ foundName,setFoundName] = useState('');
   const [openCreate, setOpenCreate] = React.useState(false);
   const [openUpdate, setOpenUpdate] = React.useState(false);
-  const handleOpenCreate = () => setOpenCreate(true);
+  const [openDelete, setOpenDelete] = React.useState(false);
   const handleCloseCreate = () => setOpenCreate(false);
+  const handleCloseUpdate = () => setOpenUpdate(false); 
+  const handleCloseDelete = () => setOpenDelete(false);
+  const handleOpenCreate = () => {
+    setSiswa(null);
+    setOpenCreate(true)
+  };
+
   const handleOpenUpdate = (siswa) => {
     setSiswa(siswa)
     console.log(siswa)
     setOpenUpdate(prev => ({...prev, update: true}))
   };  
-  const handleCloseUpdate = () => setOpenUpdate(false); 
-
-  const [openDelete, setOpenDelete] = React.useState(false);
+  
   const handleOpenDelete = (siswa) => {
     setSiswa(siswa)
     console.log(siswa)
     setOpenDelete(prev => ({...prev, update: true}))
   };
-  const handleCloseDelete = () => setOpenDelete(false);
   
-  
-  React.useEffect(() => {
-    axios.get(`${process.env.REACT_APP_BACKEND}/student`).then((res) => {
-      const responseUsers = res.data.message;
-      setSiswas(responseUsers);
-      setFoundName(responseUsers);
-      console.log(res);
-    });
-  }, []);
+  const options = {
+    selectableRows: false,
+  };
   
   const handleSubmit = (event, type) => {
     event.preventDefault()
@@ -109,19 +90,6 @@ export const DataSiswa = () => {
     }
     
   }
-
-  const handleOnChangeSearch = (e) => {
-    const keyword = e.target.value;
-    if (keyword !== '') {
-      const results = siswas?.filter((data) => {
-        return data?.nama?.toLowerCase().includes(keyword.toLowerCase());
-      });
-      setFoundName(results);
-    } else {
-      setFoundName(siswas);
-    } 
-
-  };
 
   const handleChange = (event) => {
     if (event.target.name === 'nama')(
@@ -168,11 +136,6 @@ export const DataSiswa = () => {
         setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
         setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
       },
-      headerStyle:'center',
-      headerClassName: "center-header",
-      headerStyle: {
-        textAlign: 'center',
-      },
     },
     
     {
@@ -180,6 +143,7 @@ export const DataSiswa = () => {
       name:'nama',
       selector: (row) => row.nama,
       options:{
+        sort:true,
         setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
       }
       
@@ -228,7 +192,6 @@ export const DataSiswa = () => {
       label:'Minat',
       name: 'minat',
       selector: (row) => row.minat,
-      center:true,
       options: {
         sort: false,
         setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
@@ -255,6 +218,14 @@ export const DataSiswa = () => {
   }
   ];
 
+  React.useEffect(() => {
+    axios.get(`${process.env.REACT_APP_BACKEND}/student`).then((res) => {
+      const response = res.data.message;
+      setSiswas(response);
+      console.log(res);
+    });
+  }, []);
+
   return (
     <Box
       component="main"
@@ -277,19 +248,11 @@ export const DataSiswa = () => {
                   <PersonAddAlt1Icon sx={{marginRight:1}}/>  SISWA
                 </Button>
               </div>
-              
-              {/* <TextField sx={{mb:1, alignItems:"end", display:"flex", flexDirection:"column"}} placeholder='Search...' size='small'  
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-              onChange={handleOnChangeSearch}
-              /> */}
-              
+                            
               <MUIDataTable
-                // title={"DATA SISWA"}
                 data={siswas}
                 columns={columns}
-                // options={options}
+                options={options}
               />
               
               <CreateSiswa

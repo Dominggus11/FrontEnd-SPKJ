@@ -8,44 +8,75 @@ import {
   Checkbox,
 } from '@mui/material';
 import { styles } from '../components/styles';
-import DataTable from 'react-data-table-component';
 import axios from '../api/axios';
-import { display } from '@mui/system';
+import MUIDataTable from 'mui-datatables';
 
 export const Hasil = () => {
+  const [siswas, setSiswas] = React.useState([]);
+  const options = {
+    selectableRows: false,
+  };
   const columns = [
     {
-      name: 'NISN',
+      name: 'NO',
+        options: {
+          filter: true,
+          sort: false,
+          customBodyRender: (rowIndex, dataIndex) => (dataIndex.rowIndex + 1 ),
+          setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
+          setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+        }
+    },
+    {
+      label:'NISN',
+      name: 'nisn',
       selector: (row) => row.nisn,
+      options: {
+        sort: false,
+        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
+        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+      },
     },
     
     {
-      name: 'Nama',
+      label:'Nama',
+      name:'nama',
       selector: (row) => row.nama,
+      options:{
+        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+      }
+      
     },
     {
-      name: 'Result Vi',
+      label:"Hasil Akhir",
+      name: 'resultVi',
       selector: (row) => row.resultVi,
+      options: {
+        sort: false,
+        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
+        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+      },
     },
     {
-      name: 'Jurusan Akhir',
+      label:'Jurusan',
+      name: 'jurusan',
       selector: (row) => row.jurusan,
+      options: {
+        sort: false,
+        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
+        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+      },
     },
     
   ];
 
-  const [users, setUsers] = React.useState([]);
-
   React.useEffect(() => {
     axios.get(`http://192.168.140.1:8080/student`).then((res) => {
-      const responseUsers = res.data.message;
-      setUsers(responseUsers);
+      const response = res.data.message;
+      setSiswas(response);
       console.log(res);
     });
   }, []);
-  const isIndeterminate = (indeterminate) => indeterminate;
-  const selectableRowsComponentProps = { indeterminate: isIndeterminate };
-
   return (
     <Box
       component="main"
@@ -62,14 +93,11 @@ export const Hasil = () => {
             </Grid>
             <Grid item xs={12} sx={{ p: 4,}}>
               <Typography sx={{backgroundColor:"white", textAlign:"center", mb:1,}} variant="h5" color="initial" fontWeight={600}>HASIL AKHIR JURUSAN</Typography>
-              <DataTable
-                // title="DATA SISWA"
+              <MUIDataTable
+                
+                data={siswas}
                 columns={columns}
-                data={users}
-                pagination
-                selectableRows
-                selectableRowsComponent={Checkbox}
-                selectableRowsComponentProps={selectableRowsComponentProps}
+                options={options}
               />
             </Grid>
           </Grid>

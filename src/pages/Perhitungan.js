@@ -1,108 +1,162 @@
-import React, { useState } from 'react';
+import React from 'react';
 import {
   Box,
   Typography,
   Toolbar,
   Grid,
   Container,
-  Checkbox,
-  TextField,
 } from '@mui/material';
 import { styles } from '../components/styles';
-import DataTable from 'react-data-table-component';
 import axios from '../api/axios';
-import { display } from '@mui/system';
-import { useEffect } from 'react';
+import MUIDataTable from 'mui-datatables';
 
 
 export const Perhitungan = () => {
+  const [siswas, setSiswas] = React.useState([]);
   
-  const [ foundName,setFoundName] = useState('')
-  
-  const handleOnChangeSearch = (e) => {
-    const keyword = e.target.value;
-
-    if (keyword !== '') {
-      const results = users?.filter((data) => {
-        return data?.nama?.toLowerCase().includes(keyword.toLowerCase());
-      });
-      setFoundName(results);
-    } else {
-      setFoundName(users);
-    } 
-
+  const options = {
+    selectableRows: false,
   };
-  
-  
+
   const columns = [
     {
-      name: 'No',
-      selector: (row, index) => index+1,
+      name: 'NO',
+        options: {
+          filter: true,
+          sort: false,
+          customBodyRender: (rowIndex, dataIndex) => (dataIndex.rowIndex + 1 ),
+          setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
+          setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+        }
     },
     {
-      name: 'NISN',
+      label:'NISN',
+      name: 'nisn',
       selector: (row) => row.nisn,
+      options: {
+        sort: false,
+        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
+        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+      },
     },
     
     {
-      name: 'Nama',
+      label:'Nama',
+      name:'nama',
       selector: (row) => row.nama,
+      
     },
     {
-      name: 'Ci Ujian Sekolah',
+      label: 'Ci Ujian Sekolah',
+      name:'ci_ujian_sekolah',
       selector: (row) => row.ci_ujian_sekolah,
+      options: {
+        sort: false,
+        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
+        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+      },
     },
     {
-      name: 'Ci Raport',
+      label: 'Ci Raport',
+      name:'ci_rerata_raport',
       selector: (row) => row.ci_rerata_raport,
+      options: {
+        sort: false,
+        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
+        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+      },
     },
     {
-      name: 'Ci IPA',
+      label: 'Ci IPA',
+      name:'ci_ipa',
       selector: (row) => row.ci_ipa,
+      options: {
+        sort: false,
+        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
+        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+      },
     },
     {
-      name: 'Ci IPS',
+      label: 'Ci IPS',
+      name:'ci_ips',
       selector: (row) => row.ci_ips,
+      options: {
+        sort: false,
+        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
+        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+      },
     },
     {
-      name: 'Ci Minat',
+      label: 'Ci Minat',
+      name:'ci_minat',
       selector: (row) => row.ci_minat,
+      options: {
+        sort: false,
+        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
+        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+      },
     },
     {
-      name: 'R Ujian Sekolah',
+      label: 'R Ujian Sekolah',
+      name:'r_ujian_sekolah',
       selector: (row) => row.r_ujian_sekolah,
+      options: {
+        sort: false,
+        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
+        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+      },
     },
     {
-      name: 'R Rerata Raport',
+      label: 'R Rerata Raport',
+      name:'r_rerata_raport',
       selector: (row) => row.r_rerata_raport,
+      options: {
+        sort: false,
+        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
+        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+      },
     },
     {
-      name: 'R Nilai IPA',
+      label: 'R Nilai IPA',
+      name:'r_ipa',
       selector: (row) => row.r_ipa,
+      options: {
+        sort: false,
+        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
+        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+      },
     },
     {
-      name: 'R Nilai IPS',
+      label: 'R Nilai IPS',
+      name:'r_ips',
       selector: (row) => row.r_ips,
+      options: {
+        sort: false,
+        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
+        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+      },
     },
     {
-      name: 'R Minat Siswa',
+      label: 'R Minat Siswa',
+      name:'r_minat',
       selector: (row) => row.r_minat,
+      options: {
+        sort: false,
+        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
+        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+      },
     },
   ];
 
-  const [users, setUsers] = React.useState([]);
+  
 
   React.useEffect(() => {
     axios.get(`http://192.168.140.1:8080/normalisasi`).then((res) => {
-      const responseUsers = res.data.message;
-      setUsers(responseUsers);
-      setFoundName(responseUsers);
+      const response = res.data.message;
+      setSiswas(response);
       console.log(res);
-
     });
   }, []);
-  const isIndeterminate = (indeterminate) => indeterminate;
-  const selectableRowsComponentProps = { indeterminate: isIndeterminate };
 
   return (
     <Box
@@ -120,18 +174,13 @@ export const Perhitungan = () => {
             </Grid>
             <Grid item xs={12} sx={{ p: 4}}>
               <Typography sx={{backgroundColor:"white", textAlign:"center", mb:1, width:"100%"}} variant="h5" color="initial" fontWeight={600}>DATA PERHITUNGAN</Typography>
-              <TextField sx={{mb:1, alignItems:"end", display:"flex", flexDirection:"column"}} placeholder='Search...' size='small'  
-              onClick={(e) => {
-                e.stopPropagation();
-              }}
-              onChange={handleOnChangeSearch}
-    />
-              <DataTable
+              
+              <MUIDataTable
+                data={siswas}
                 columns={columns}
-                data={foundName}
-                pagination
-                selectableRowsComponentProps={selectableRowsComponentProps}
+                options={options}
               />
+              
             </Grid>
           </Grid>
         </Container>

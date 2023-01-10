@@ -13,32 +13,19 @@ import MUIDataTable from 'mui-datatables';
 import UpdateCriteria from './UpdateCriteria';
 
 export const DataKriteria = () => {
-  React.useEffect(() => {
-		const token = localStorage.getItem('jwtToken');
-		if (!token) {
-			// Arahkan ke halaman login jika token tidak ada di local storage
-      window.location.href = '/';
-		}
-	}, []);
   const [kriterias, setKriterias] = React.useState([]);
   const [kriteria, setKriteria] = useState(null);
   const [openUpdate, setOpenUpdate] = React.useState(false);
+  const handleCloseUpdate = () => setOpenUpdate(false); 
+ 
   const handleOpenUpdate = (kriteria) => {
     setKriteria(kriteria)
-    console.log(kriteria)
     setOpenUpdate (prev => ({...prev, update: true}))
   };
-  const handleCloseUpdate = () => setOpenUpdate(false); 
-  
-  const isIndeterminate = (indeterminate) => indeterminate;
-  const selectableRowsComponentProps = { indeterminate: isIndeterminate };
-  
-  React.useEffect(() => {
-    axios.get(`${process.env.REACT_APP_BACKEND}/kriteria`).then((res) => {
-      const responseKriterias = res.data.message;
-      setKriterias(responseKriterias);
-    });
-  }, []);
+ 
+  const options = {
+    selectableRows: false,
+  };
 
   const handleSubmit = (event, type) => {
     event.preventDefault()
@@ -112,10 +99,14 @@ export const DataKriteria = () => {
           );
        }
     },
-  }
-    
-    
-  ];
+  }];
+
+  React.useEffect(() => {
+    axios.get(`${process.env.REACT_APP_BACKEND}/kriteria`).then((res) => {
+      const responseKriterias = res.data.message;
+      setKriterias(responseKriterias);
+    });
+  }, []);
 
   return (
     <Box
@@ -136,6 +127,7 @@ export const DataKriteria = () => {
               <MUIDataTable
                 columns={columns}
                 data={kriterias}
+                options={options}
               />
 
               <UpdateCriteria 

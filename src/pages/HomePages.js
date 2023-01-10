@@ -1,29 +1,12 @@
 import * as React from 'react';
 import {
-  IconButton,
   Typography,
   Toolbar,
   Box,
   Container,
   Grid,
-  Paper,
-  Button,
-  Chip,
-  Modal,
-  Stack,
-  CircularProgress,
 } from '@mui/material';
-import { FaPlus, FaTrash } from 'react-icons/fa';
-import { MdAddTask } from 'react-icons/md';
-import TextField from '@mui/material/TextField';
-import { DateTimePicker, LocalizationProvider } from '@mui/lab';
-import DateFnsAdapter from '@date-io/date-fns';
 import { styles } from '../components/styles';
-import TaskCardPending from '../components/TaskCardPending';
-import TaskCardCompleted from '../components/TaskCardCompleted';
-import axios from '../api/axios';
-import { Margin } from '@mui/icons-material';
-
 const HomePages = () => {
   return (
     <Box

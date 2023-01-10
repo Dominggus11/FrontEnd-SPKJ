@@ -9,20 +9,22 @@ const Login = () => {
   // const history = useHistory();
   const [users, setUsers] = React.useState([]);
   const [user, setUser] = React.useState(null);
-  const [open, setOpen] = React.useState(false);
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const [modalIsOpen, setModalIsOpen] = React.useState(false);
  
   const style = {
     position: 'absolute',
     top: '50%',
     left: '50%',
     transform: 'translate(-50%, -50%)',
-    width: 400,
+    width: 300,
     bgcolor: 'background.paper',
     boxShadow: 24,
     p: 4,
-    textAlign:'center'
+    textAlign:'center',
+    borderRadius:'10px',
+    color:'red',
+
+    
   };
 
   const handleSubmit = (event) => {
@@ -44,18 +46,8 @@ const Login = () => {
           }
         })
         .catch(response => {
-          if(response.response.data.Error === "Username / Password Invalid") {
-          }
-          
-          <Modal
-          open={open}
-          onClose={handleClose}
-        >
-            <Stack spacing={1}>
-            <Typography variant='subtitle2'>{response.response.data.Error}</Typography>
-                <Button color='error' variant="contained" sx={{m:1}} onClick={handleClose}>Cancel</Button>
-            </Stack>
-         </Modal>
+          // window.alert("Gagal Login");
+          setModalIsOpen(true);
         })
       // console.log(event.target); 
     }
@@ -74,6 +66,7 @@ const Login = () => {
 
 
   return (
+    <div>
     <Box sx={styles.bgLogin}>
       <Box sx={styles.formLogin}>
       <Typography id="modal-modal-title" variant="h3" fontWeight="700" paddingBottom={"20px"} color="#242E6F">
@@ -108,7 +101,7 @@ const Login = () => {
               sx={{ mt: 3 }}
             />
             <Box display="flex">
-              <Button onClick={handleOpen}
+              <Button
                 variant="contained"
                 color="info"
                 type="submit"
@@ -121,6 +114,17 @@ const Login = () => {
         </form>
       </Box>
     </Box>
+    <Modal 
+        open={modalIsOpen} 
+        onClose={() => setModalIsOpen(false)}
+      >
+        <Box sx={style}>
+        <Typography variant='subtitle2'>USERNAME ATAU PASSWORD SALAH</Typography>
+        <Stack spacing={1}> 
+        </Stack>
+      </Box>
+      </Modal>
+    </div>
   );
 };
 export default Login;
