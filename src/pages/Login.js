@@ -3,11 +3,8 @@ import { Typography, Box, Button, Stack, Modal } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { styles } from '../components/styles';
 import axios from '../api/axios';
-// import { useHistory } from 'react-router';
 
 const Login = () => {
-  // const history = useHistory();
-  const [users, setUsers] = React.useState([]);
   const [user, setUser] = React.useState(null);
   const [modalIsOpen, setModalIsOpen] = React.useState(false);
  
@@ -29,28 +26,19 @@ const Login = () => {
 
   const handleSubmit = (event) => {
     event.preventDefault()
-    {
-
       axios.post(`${process.env.REACT_APP_BACKEND}/login`, {username: user.username, password: user.password})
         .then(response => {
           console.log(response.data.response);
           console.log(typeof response.status);
-
-          if (response.status == 200){
             console.log(JSON.stringify(response?.data));
             const accessToken = response?.data?.message;
             localStorage.setItem('jwtToken', accessToken);
             window.location.href = '/dashboard';
-          } else {
-            alert(response.data.message);
-          }
         })
         .catch(response => {
-          // window.alert("Gagal Login");
+          console.log(response);
           setModalIsOpen(true);
         })
-      // console.log(event.target); 
-    }
   }
 
   const handleChange = (event) => {
@@ -62,8 +50,6 @@ const Login = () => {
     )
     console.log(event.target.name)
   }
-
-
 
   return (
     <div>

@@ -20,7 +20,6 @@ function RequireAuth({children}) {
     const location = useLocation()
     if (token) {
         // Arahkan ke halaman login jika token tidak ada di local storage
-        
         return <Main>{children}</Main>;
         
     }

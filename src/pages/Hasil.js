@@ -5,7 +5,6 @@ import {
   Toolbar,
   Grid,
   Container,
-  Checkbox,
 } from '@mui/material';
 import { styles } from '../components/styles';
 import axios from '../api/axios';

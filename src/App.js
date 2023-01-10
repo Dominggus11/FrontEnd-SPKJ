@@ -1,8 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { ThemeProvider } from '@mui/material/styles';
 import { Navigate, Route, Routes } from 'react-router-dom';
-import { Box, CssBaseline } from '@mui/material';
-import AppBarDrawer from './components/AppBarDrawer';
 import  { Hasil } from './pages/Hasil';
 import Login from './pages/Login';
 import { Perhitungan } from './pages/Perhitungan';
@@ -11,7 +9,6 @@ import { theme } from './components/theme';
 import '@fontsource/inter';
 import HomePages from './pages/HomePages';
 import { DataKriteria } from './pages/DataKriteria';
-import CreateSiswa from './pages/CreateSiswa';
 import Authenticated from "./middleware/Authenticated";
 import RequireAuth from "./middleware/RequireAuth";
 
