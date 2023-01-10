@@ -6,9 +6,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard';
 import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 import BarChartIcon from '@mui/icons-material/BarChart';
 import AssignmentIcon from '@mui/icons-material/Assignment';
-import PowerSettingsNewRoundedIcon from '@mui/icons-material/PowerSettingsNewRounded';
 import { Link as RouterLink } from 'react-router-dom';
-import PersonIcon from '@mui/icons-material/Person';
 import {
   MenuItem,
   IconButton,
@@ -20,7 +18,6 @@ import {
   Avatar,
   Menu,
   Tooltip,
-  TextField,
   ListItemText,
   ListItemIcon,
   ListItemButton,
@@ -30,19 +27,10 @@ import {
 import {
   FaBars,
   FaChevronLeft,
-  FaSearch,
-  FaPowerOff,
-  FaTasks,
-  FaNewspaper,
   FaUser,
-  
 } from 'react-icons/fa';
 import MuiAppBar from '@mui/material/AppBar';
-import { PowerOffOutlined } from '@mui/icons-material';
-import { style } from '@mui/system';
-
 const drawerWidth = 240;
-
 const openedMixin = (theme) => ({
   width: drawerWidth,
   transition: theme.transitions.create('width', {
@@ -106,7 +94,7 @@ function AppBarDrawer() {
     {
       text: 'Dashboard',
       icon: <DashboardIcon />,
-      link: '/',
+      link: '/dashboard',
     },
     {
       text: 'Data Siswa',
