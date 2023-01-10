@@ -1,29 +1,63 @@
 import * as React from 'react';
-import { Typography, Box, Button, Stack } from '@mui/material';
+import { Typography, Box, Button, Stack, Modal } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { styles } from '../components/styles';
 import axios from '../api/axios';
+// import { useHistory } from 'react-router';
 
 const Login = () => {
-
+  // const history = useHistory();
   const [users, setUsers] = React.useState([]);
   const [user, setUser] = React.useState(null);
+  const [open, setOpen] = React.useState(false);
+  const handleOpen = () => setOpen(true);
+  const handleClose = () => setOpen(false);
+ 
+  const style = {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    boxShadow: 24,
+    p: 4,
+    textAlign:'center'
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault()
     {
+
       axios.post(`${process.env.REACT_APP_BACKEND}/login`, {username: user.username, password: user.password})
         .then(response => {
-          console.log(response.data.message);
-          console.log(user.ID)
-          // window.location.reload() 
+          console.log(response.data.response);
           console.log(typeof response.status);
-          if (response.status == 200){
-            window.location.href = '/dashboard';
-          }
-        });
 
-      console.log(event.target); 
+          if (response.status == 200){
+            console.log(JSON.stringify(response?.data));
+            const accessToken = response?.data?.message;
+            localStorage.setItem('jwtToken', accessToken);
+            window.location.href = '/dashboard';
+          } else {
+            alert(response.data.message);
+          }
+        })
+        .catch(response => {
+          if(response.response.data.Error === "Username / Password Invalid") {
+          }
+          
+          <Modal
+          open={open}
+          onClose={handleClose}
+        >
+            <Stack spacing={1}>
+            <Typography variant='subtitle2'>{response.response.data.Error}</Typography>
+                <Button color='error' variant="contained" sx={{m:1}} onClick={handleClose}>Cancel</Button>
+            </Stack>
+         </Modal>
+        })
+      // console.log(event.target); 
     }
   }
 
@@ -74,7 +108,7 @@ const Login = () => {
               sx={{ mt: 3 }}
             />
             <Box display="flex">
-              <Button 
+              <Button onClick={handleOpen}
                 variant="contained"
                 color="info"
                 type="submit"

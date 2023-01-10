@@ -7,6 +7,7 @@ import {
   Container,
   TextField,
   Button,
+  Alert,
 } from '@mui/material';
 import { styles } from '../components/styles';
 import DataTable from 'react-data-table-component';
@@ -21,6 +22,17 @@ import MUIDataTable from "mui-datatables";
 import DeleteSiswa from './DeleteSiswa';
 
 export const DataSiswa = () => {
+  React.useEffect(() => {
+		const token = localStorage.getItem('jwtToken');
+		if (!token) {
+      // Arahkan ke halaman login jika token tidak ada di local storage
+      window.alert("Login Dulu");
+      window.location.href = '/';
+		}
+    else{
+        
+    }
+	}, []);
   const isIndeterminate = (indeterminate) => indeterminate;
   const selectableRowsComponentProps = { indeterminate: isIndeterminate };
   const [siswas, setSiswas] = React.useState([]);

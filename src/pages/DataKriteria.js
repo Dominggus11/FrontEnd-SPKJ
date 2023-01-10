@@ -13,6 +13,13 @@ import MUIDataTable from 'mui-datatables';
 import UpdateCriteria from './UpdateCriteria';
 
 export const DataKriteria = () => {
+  React.useEffect(() => {
+		const token = localStorage.getItem('jwtToken');
+		if (!token) {
+			// Arahkan ke halaman login jika token tidak ada di local storage
+      window.location.href = '/';
+		}
+	}, []);
   const [kriterias, setKriterias] = React.useState([]);
   const [kriteria, setKriteria] = useState(null);
   const [openUpdate, setOpenUpdate] = React.useState(false);

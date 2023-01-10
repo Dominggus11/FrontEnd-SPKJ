@@ -8,6 +8,7 @@ import BarChartIcon from '@mui/icons-material/BarChart';
 import AssignmentIcon from '@mui/icons-material/Assignment';
 import PowerSettingsNewRoundedIcon from '@mui/icons-material/PowerSettingsNewRounded';
 import { Link as RouterLink } from 'react-router-dom';
+import PersonIcon from '@mui/icons-material/Person';
 import {
   MenuItem,
   IconButton,
@@ -24,6 +25,7 @@ import {
   ListItemIcon,
   ListItemButton,
   Link,
+  Button,
 } from '@mui/material';
 import {
   FaBars,
@@ -139,6 +141,10 @@ function AppBarDrawer() {
     setAnchorElUser(null);
   };
 
+  const handleLogout = () => {
+		// Hapus item dari local storage
+		localStorage.removeItem('jwtToken');
+	};
   return (
     <div>
       <AppBar
@@ -168,7 +174,7 @@ function AppBarDrawer() {
           >
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar src="/img/avatar-male.png" />
+              <Avatar src="/broken-image.jpg" />
               </IconButton>
             </Tooltip>
             <Menu
@@ -197,17 +203,20 @@ function AppBarDrawer() {
             >
               <MenuItem onClick={handleCloseUserMenu}>
                 <ListItemText aria-disabled>
-                  <Typography>roymalau@gmail.com</Typography>
+                  <Typography>admin</Typography>
                 </ListItemText>
               </MenuItem>
               <Divider />
               <MenuItem onClick={handleCloseUserMenu}>
-                <ListItemIcon color="error">
-                  <FaPowerOff color="error" fontSize="small" />
-                </ListItemIcon>
-                <Link to='/login' component={RouterLink} underline="none">
+                 <Button onClick={handleLogout}>
+                 <Link to='/' component={RouterLink} underline="none">
+                  {/* <ListItemIcon color="error">
+                    <FaPowerOff color="error" fontSize="small" />
+                  </ListItemIcon> */}
                   <Typography color="error" >Log Out</Typography>
-                </Link>
+                  </Link>
+                  </Button> 
+                
               </MenuItem>
             </Menu>
           </Box>

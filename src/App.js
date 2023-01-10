@@ -14,6 +14,13 @@ import { DataKriteria } from './pages/DataKriteria';
 import CreateSiswa from './pages/CreateSiswa';
 
 function Main() {
+  React.useEffect(() => {
+		const token = localStorage.getItem('jwtToken');
+		if (!token) {
+			// Arahkan ke halaman login jika token tidak ada di local storage
+      window.location.href = '/';
+		}
+	}, []);
   return (
     <div>
       <Box sx={{ display: 'flex' }}>
