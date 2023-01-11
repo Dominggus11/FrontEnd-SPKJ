@@ -7,7 +7,7 @@ import {
   Container,
 } from '@mui/material';
 import { styles } from '../components/styles';
-import axios from '../api/axios';
+import axios from 'axios';
 import MUIDataTable from 'mui-datatables';
 
 

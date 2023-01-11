@@ -5,6 +5,12 @@ import {
   Button,
   Modal,
   Typography,
+  Autocomplete,
+  FormControl,
+  FormControlLabel,
+  FormLabel,
+  RadioGroup,
+  Radio,
 } from '@mui/material';
 import { Stack } from '@mui/system';
 const style = {
@@ -20,8 +26,9 @@ const style = {
   borderRadius:'10px',
 };
 function CreateSiswa({handleCloseCreate, openCreate, handleSubmit, siswa, handleChange}) {
-  
-  
+  const options = [
+    "IPA", "IPS",
+  ]
   return (
     <Modal
       open={openCreate}
@@ -36,7 +43,13 @@ function CreateSiswa({handleCloseCreate, openCreate, handleSubmit, siswa, handle
           <TextField size='small' required type={'number'} label="Rerata raport" value={siswa?.rerata_raport} name='rerata_raport' onChange={handleChange} variant='outlined'/>
           <TextField size='small' required type={'number'} label="Nilai IPA" value={siswa?.ipa} name='ipa' onChange={handleChange} variant='outlined'/>
           <TextField size='small' required type={'number'} label="Nilai IPS" value={siswa?.ips} name='ips' onChange={handleChange} variant='outlined'/>
-          <TextField size='small' required  label="Minat Siswa" value={siswa?.minat} name='minat' onChange={handleChange} variant='outlined'/>
+          {/* <TextField size='small' required  label="Minat Siswa" value={siswa?.minat} name='minat' onChange={handleChange} variant='outlined'/> */}
+          <Autocomplete
+            options={options}
+            value={siswa?.minat}
+            onChange={handleChange}
+            renderInput={(params) => <TextField {...params} label="Minat" variant="outlined" />}
+          />
           <div>
             <Button variant="contained" color='success' type='submit'>Tambah</Button>
             <Button color='error' variant="contained" sx={{m:1}} onClick={handleCloseCreate}>Cancel</Button>

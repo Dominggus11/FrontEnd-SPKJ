@@ -6,6 +6,8 @@ import {
   Grid,
   Container,
   Button,
+  Snackbar,
+  Alert,
 } from '@mui/material';
 import { styles } from '../components/styles';
 import axios from '../api/axios';
@@ -27,6 +29,10 @@ export const DataSiswa = () => {
   const handleCloseCreate = () => setOpenCreate(false);
   const handleCloseUpdate = () => setOpenUpdate(false); 
   const handleCloseDelete = () => setOpenDelete(false);
+  const [SnackBarIsOpen, setSnackBarIsOpen] = React.useState(false);
+  const [SnackBarCreateIsOpen, setSnackBarCreateIsOpen] = React.useState(false);
+  const [SnackBarUpdateIsOpen, setSnackBarUpdateIsOpen] = React.useState(false);
+  const [SnackBarDeleteIsOpen, setSnackBarDeleteIsOpen] = React.useState(false);
   const handleOpenCreate = () => {
     setSiswa(null);
     setOpenCreate(true)
@@ -54,14 +60,16 @@ export const DataSiswa = () => {
     if (type === 'create') {
       
       axios.post(`${process.env.REACT_APP_BACKEND}/student`, {nama: siswa.nama, nisn: siswa.nisn, ujian_sekolah: siswa.ujian_sekolah, rerata_raport: siswa.rerata_raport, ipa: siswa.ipa, ips: siswa.ips, minat: siswa.minat})
-        .then(response => {
-          console.log(response.data.message);
-          console.log(siswa.ID);
+        .then(res => {
+          const response = res.data.message;
+          console.log(res.data.message);
+          setSiswas(response);
+          setSnackBarCreateIsOpen(true);
           handleCloseCreate()
-          window.location.reload()
         })
         .catch(err => {
           console.log(err.response.data.error)
+          setSnackBarIsOpen(true);
         });
 
       console.log(event.target);
@@ -70,28 +78,39 @@ export const DataSiswa = () => {
     }
     else if (type === 'update') {
       axios.put(`${process.env.REACT_APP_BACKEND}/student/${siswa.ID}`, {nama: siswa.nama, nisn: siswa.nisn, ujian_sekolah: siswa.ujian_sekolah, rerata_raport: siswa.rerata_raport, ipa: siswa.ipa, ips: siswa.ips, minat: siswa.minat})
-        .then(response => {
-          console.log(response.data.message);
-          console.log(siswa.ID)
+        .then(res => {
+          const response = res.data.message;
+          setSiswas(response);
+          // console.log(response.data.message);
+          // console.log(siswa.ID)
+          setSnackBarUpdateIsOpen(true);
           handleCloseUpdate()
-          // window.location.reload() 
+        })
+        .catch(err => {
+          console.log(err.response.data.error)
+          setSnackBarIsOpen(true);
         });
 
       console.log(event.target);
     }
     else if (type === 'delete') {
       axios.delete(`${process.env.REACT_APP_BACKEND}/student/${siswa.ID}`)
-      .then(response => {
-        console.log(response.data.message);
-        console.log(siswa.ID)
-        handleCloseUpdate()
-        window.location.reload() 
+      .then(res => {
+        const response = res.data.message;
+        setSiswas(response);
+        console.log(res.data.message)
+        setSnackBarDeleteIsOpen(true);
+        handleCloseDelete()
+
+      })
+      .catch(err => {
+        console.log(err.response.data.error)
       });
     }
     
   }
 
-  const handleChange = (event) => {
+  const handleChange = (event, value) => {
     if (event.target.name === 'nama')(
       setSiswa(prev => ({...prev, nama: event.target.value}))
     )
@@ -110,8 +129,8 @@ export const DataSiswa = () => {
     else if (event.target.name === 'ips')(
       setSiswa(prev => ({...prev, ips: parseFloat(event.target.value)}))
     )
-    else if (event.target.name === 'minat')(
-      setSiswa(prev => ({...prev, minat: event.target.value}))
+    else (
+      setSiswa(prev => ({...prev, minat: value}))
     )
     console.log(event.target.name)
   }
@@ -227,6 +246,7 @@ export const DataSiswa = () => {
   }, []);
 
   return (
+    <>
     <Box
       component="main"
       sx={{
@@ -281,5 +301,42 @@ export const DataSiswa = () => {
         </Container>
       </Box>
     </Box>
+    <Snackbar 
+    open={SnackBarIsOpen} 
+    onClose={() => setSnackBarIsOpen(false)}
+    autoHideDuration={5000}>
+      <Alert severity="error" sx={{ width: '100%' }}>
+            NISN Sudah Terdaftar
+      </Alert>
+
+    </Snackbar>
+    <Snackbar 
+    open={SnackBarUpdateIsOpen} 
+    onClose={() => setSnackBarUpdateIsOpen(false)}
+    autoHideDuration={5000}>
+      <Alert severity="success" sx={{ width: '100%' }}>
+        Data Siswa berhasil Di Update
+      </Alert>
+
+    </Snackbar>
+    <Snackbar 
+    open={SnackBarDeleteIsOpen} 
+    onClose={() => setSnackBarDeleteIsOpen(false)}
+    autoHideDuration={5000}>
+      <Alert severity="success" sx={{ width: '100%' }}>
+        Data Siswa berhasil Di Update
+      </Alert>
+
+    </Snackbar>
+    <Snackbar 
+    open={SnackBarCreateIsOpen} 
+    onClose={() => setSnackBarCreateIsOpen(false)}
+    autoHideDuration={5000}>
+      <Alert severity="success" sx={{ width: '100%' }}>
+        Data Siswa berhasil Di Tambah
+      </Alert>
+
+    </Snackbar>
+  </>
   );
 };

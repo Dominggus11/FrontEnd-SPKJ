@@ -73,7 +73,7 @@ export const DataKriteria = () => {
         setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
       },
     },
-    {
+    { 
       label: 'BOBOT KRITERIA',
       name:'bobot',
       selector: (row) => row.bobot,
