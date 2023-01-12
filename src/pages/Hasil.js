@@ -70,7 +70,7 @@ export const Hasil = () => {
   ];
 
   React.useEffect(() => {
-    axios.get(`http://192.168.140.1:8080/student`).then((res) => {
+    axios.get(`${process.env.REACT_APP_BACKEND}/student`).then((res) => {
       const response = res.data.message;
       setSiswas(response);
       console.log(res);
