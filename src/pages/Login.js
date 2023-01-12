@@ -1,28 +1,13 @@
 import * as React from 'react';
-import { Typography, Box, Button, Stack, Modal } from '@mui/material';
+import { Typography, Box, Button, Stack, Modal, Alert, Snackbar } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { styles } from '../components/styles';
 import axios from '../api/axios';
 
 const Login = () => {
   const [user, setUser] = React.useState(null);
-  const [modalIsOpen, setModalIsOpen] = React.useState(false);
- 
-  const style = {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%, -50%)',
-    width: 300,
-    bgcolor: 'background.paper',
-    boxShadow: 24,
-    p: 4,
-    textAlign:'center',
-    borderRadius:'10px',
-    color:'red',
+  const [snackBarOpen, setSnackBarIsOpen] = React.useState(false);
 
-    
-  };
 
   const handleSubmit = (event) => {
     event.preventDefault()
@@ -37,7 +22,7 @@ const Login = () => {
         })
         .catch(response => {
           console.log(response);
-          setModalIsOpen(true);
+          setSnackBarIsOpen(true);
         })
   }
 
@@ -100,16 +85,15 @@ const Login = () => {
         </form>
       </Box>
     </Box>
-    <Modal 
-        open={modalIsOpen} 
-        onClose={() => setModalIsOpen(false)}
-      >
-        <Box sx={style}>
-        <Typography variant='subtitle2'>USERNAME ATAU PASSWORD SALAH</Typography>
-        <Stack spacing={1}> 
-        </Stack>
-      </Box>
-      </Modal>
+    <Snackbar 
+    open={snackBarOpen} 
+    onClose={() => setSnackBarIsOpen(false)}
+    autoHideDuration={5000}>
+      <Alert severity="error" sx={{ width: '100%' }}>
+        Username Atau password Salah
+      </Alert>
+
+    </Snackbar>
     </div>
   );
 };

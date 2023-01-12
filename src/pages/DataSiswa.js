@@ -81,8 +81,7 @@ export const DataSiswa = () => {
         .then(res => {
           const response = res.data.message;
           setSiswas(response);
-          // console.log(response.data.message);
-          // console.log(siswa.ID)
+          console.log(res);
           setSnackBarUpdateIsOpen(true);
           handleCloseUpdate()
         })
