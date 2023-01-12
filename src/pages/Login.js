@@ -1,5 +1,5 @@
 import * as React from 'react';
-import { Typography, Box, Button, Stack, Modal, Alert, Snackbar } from '@mui/material';
+import { Typography, Box, Button, Stack, Alert, Snackbar } from '@mui/material';
 import TextField from '@mui/material/TextField';
 import { styles } from '../components/styles';
 import axios from '../api/axios';
