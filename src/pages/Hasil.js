@@ -130,9 +130,7 @@ export const Hasil = () => {
   }  
   ];
 
-<<<<<<< HEAD
-  
-=======
+
   React.useEffect(() => {
     axios.get(`${process.env.REACT_APP_BACKEND}/student`).then((res) => {
       const response = res.data.message;
@@ -140,7 +138,6 @@ export const Hasil = () => {
       console.log(res);
     });
   }, []);
->>>>>>> c2e1750b5e1182016071b38c9652ecbe4cba53db
   return (
     <Box
       component="main"
