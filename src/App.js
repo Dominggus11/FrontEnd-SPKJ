@@ -11,6 +11,7 @@ import HomePages from './pages/HomePages';
 import { DataKriteria } from './pages/DataKriteria';
 import Authenticated from "./middleware/Authenticated";
 import RequireAuth from "./middleware/RequireAuth";
+import { PerhitunganSMART } from "./pages/PerhitunganSMART";
 
 function App() {
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path="datakriteria" element={<RequireAuth ><DataKriteria /></RequireAuth>} />
           <Route path="perhitungan" element={<RequireAuth ><Perhitungan /></RequireAuth>} />
           <Route path="hasil" element={<RequireAuth ><Hasil /></RequireAuth>} />
+          <Route path="perhitungansmart" element={<RequireAuth ><PerhitunganSMART /></RequireAuth>} />
         </Route>
         </Routes>
       </ThemeProvider>

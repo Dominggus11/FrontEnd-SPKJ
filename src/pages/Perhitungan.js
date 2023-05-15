@@ -86,19 +86,10 @@ export const Perhitungan = () => {
         setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
       },
     },
-    {
-      label: 'Ci Minat',
-      name:'ci_minat',
-      selector: (row) => row.ci_minat,
-      options: {
-        sort: false,
-        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
-        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
-      },
-    },
+    
     {
       label: 'R Ujian Sekolah',
-      name:'r_ujian_sekolah',
+      name:'r_ujian_sekolah_saw',
       selector: (row) => row.r_ujian_sekolah,
       options: {
         sort: false,
@@ -108,7 +99,7 @@ export const Perhitungan = () => {
     },
     {
       label: 'R Rerata Raport',
-      name:'r_rerata_raport',
+      name:'r_rerata_raport_saw',
       selector: (row) => row.r_rerata_raport,
       options: {
         sort: false,
@@ -118,7 +109,7 @@ export const Perhitungan = () => {
     },
     {
       label: 'R Nilai IPA',
-      name:'r_ipa',
+      name:'r_ipa_saw',
       selector: (row) => row.r_ipa,
       options: {
         sort: false,
@@ -128,7 +119,7 @@ export const Perhitungan = () => {
     },
     {
       label: 'R Nilai IPS',
-      name:'r_ips',
+      name:'r_ips_saw',
       selector: (row) => row.r_ips,
       options: {
         sort: false,
@@ -136,16 +127,7 @@ export const Perhitungan = () => {
         setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
       },
     },
-    {
-      label: 'R Minat Siswa',
-      name:'r_minat',
-      selector: (row) => row.r_minat,
-      options: {
-        sort: false,
-        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
-        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
-      },
-    },
+    
   ];
 
   
@@ -173,7 +155,7 @@ export const Perhitungan = () => {
             <Grid item xs={12} style={styles.titlePage} >
             </Grid>
             <Grid item xs={12} sx={{ p: 4}}>
-              <Typography sx={{backgroundColor:"white", textAlign:"center", mb:1, width:"100%"}} variant="h5" color="initial" fontWeight={600}>DATA PERHITUNGAN</Typography>
+              <Typography sx={{backgroundColor:"white", textAlign:"center", mb:1, width:"100%"}} variant="h5" color="initial" fontWeight={600}>DATA PERHITUNGAN SAW</Typography>
               
               <MUIDataTable
                 data={siswas}

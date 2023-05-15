@@ -17,9 +17,10 @@ export const DataKriteria = () => {
   const [kriteria, setKriteria] = useState(null);
   const [openUpdate, setOpenUpdate] = React.useState(false);
   const handleCloseUpdate = () => setOpenUpdate(false); 
- 
+  // const [siswas, setSiswas] = React.useState([]);
   const handleOpenUpdate = (kriteria) => {
     setKriteria(kriteria)
+    console.log(kriteria)
     setOpenUpdate (prev => ({...prev, update: true}))
   };
  
@@ -30,12 +31,11 @@ export const DataKriteria = () => {
   const handleSubmit = (event, type) => {
     event.preventDefault()
     if (type === 'update') {
-      axios.put(`${process.env.REACT_APP_BACKEND}/kriteria/${kriteria.ID}`, {nama: kriteria.nama, bobot: kriteria.bobot})
+      axios.put(`${process.env.REACT_APP_BACKEND}/kriteria/${kriteria.id}`, {nama: kriteria.nama, bobot: kriteria.bobot})
         .then(response => {
           console.log(response.data.data);
           console.log(kriteria.ID)
           handleCloseUpdate()
-          // window.location.reload() 
         });
 
       console.log(event.target);
@@ -50,7 +50,43 @@ export const DataKriteria = () => {
       setKriteria(prev => ({...prev, bobot: parseFloat(event.target.value)}))
     )
     console.log(event.target.name)
+    // else if (event  === 'first')(
+    //   console.log(event)
+    // )
+    
   }
+
+  const handleChangecheckbox = (data) => {
+    setKriterias((prevKriterias) =>
+      prevKriterias.map((kriteria) =>
+        kriteria.id === data.id
+          ? { ...kriteria, is_active: !kriteria.is_active }
+          : kriteria
+      )
+    );
+    if(data.is_active == 1)
+    {
+      data.is_active = 2
+    }
+    else{
+      data.is_active = 1
+    }
+    axios
+      .put(`${process.env.REACT_APP_BACKEND}/kriteria_active/${data.id}`, {
+        is_active: data.is_active,
+      })
+      .then((response) => {
+        console.log(response.data.data);
+        console.log(data.is_active);
+        handleCloseUpdate();
+      });
+
+      axios.get(`${process.env.REACT_APP_BACKEND}/normalisasi`).then((res) => {
+        
+      });
+    console.log(kriterias);
+    console.log(data);
+  };
 
   const columns = [
     {
@@ -73,6 +109,7 @@ export const DataKriteria = () => {
         setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
       },
     },
+    
     { 
       label: 'BOBOT KRITERIA',
       name:'bobot',
@@ -83,30 +120,55 @@ export const DataKriteria = () => {
         setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
       },
     },
-    {
-      label:'ACTION',
-      name: 'aksi',
-      options: {
-        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center', justifyContent:'center'}}),
-        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
-        filter: false,
-        sort: false,
-        customBodyRenderLite: (dataIndex, rowIndex) => {
-          return (
-            <div>
-            <button onClick={() => handleOpenUpdate(kriterias[dataIndex])} style={{margin: '5px'}}> <CreateIcon color='warning'/></button> 
-            </div>    
-          );
-       }
-    },
-  }];
+   
+  {
+    label: 'ACTIVE',
+    name: 'active',
+    selector: (row) => row.nama,
+    options: {
+      setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center', justifyContent:'center'}}),
+      setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+      filter: false,
+      sort: false,
+      customBodyRenderLite: (dataIndex, rowIndex) => {
+        return (
+          <div>
+            <input type='checkbox' onChange={()=>handleChangecheckbox(kriterias[dataIndex])}
+             style={{width: "28px", height: "28px"}} 
+           
+            //  checked={kriterias[dataIndex].is_active}
+            checked={kriterias[dataIndex].is_active == 1}
+             />
+          </div>    
+        );
+     }
+  },
+  },
+  {
+    label:'ACTION',
+    name: 'aksi',
+    options: {
+      setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center', justifyContent:'center'}}),
+      setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+      filter: false,
+      sort: false,
+      customBodyRenderLite: (dataIndex, rowIndex) => {
+        return (
+          <div>
+          <button onClick={() => handleOpenUpdate(kriterias[dataIndex])} value={true} style={{margin: '5px'}}> <CreateIcon color='warning'/></button> 
+          </div>    
+        );
+     }
+  },
+},
+];
 
   React.useEffect(() => {
     axios.get(`${process.env.REACT_APP_BACKEND}/kriteria`).then((res) => {
       const responseKriterias = res.data.message;
       setKriterias(responseKriterias);
     });
-  }, []);
+  }, [setKriterias]);
 
   return (
     <Box

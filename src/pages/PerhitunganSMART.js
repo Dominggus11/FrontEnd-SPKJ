@@ -7,49 +7,17 @@ import {
   Container,
 } from '@mui/material';
 import { styles } from '../components/styles';
-import axios from '../api/axios';
+import axios from 'axios';
 import MUIDataTable from 'mui-datatables';
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import DetailNilai from './DetailNilai';
 
-export const Hasil = () => {
+
+export const PerhitunganSMART = () => {
   const [siswas, setSiswas] = React.useState([]);
-  const [siswa, setSiswa] = React.useState(null);
-  const handleCloseDetail = () => setOpenDetail(false); 
-  const [openDetail, setOpenDetail] = React.useState(false);
-  const handleOpenDetail = (siswa, saw, smart) => {
-    setSiswa(siswa)
-    console.log(siswa)
-    setOpenDetail(prev => ({...prev, update: true}))
-  }; 
+  
   const options = {
     selectableRows: false,
   };
 
-  const handleSubmit = (event, type) => {
-    event.preventDefault()
-
-    
-    if (type === 'update') {    
-      axios.get(`${process.env.REACT_APP_BACKEND}/student/${siswa.ID}`).then((res) => {
-        const response = res.data.message;
-        setSiswas(response);
-        console.log(res);
-      });
-    }
-  }
-  React.useEffect(() => {
-    axios.get(`${process.env.REACT_APP_BACKEND}/student`).then((res) => {
-      const response = res.data.message;
-      setSiswas(response);
-      console.log(res);
-    });
-    axios.get(`${process.env.REACT_APP_BACKEND}/normalisasi`).then((res) => {
-      const response = res.data.message;
-      setSiswas(response);
-      console.log(res);
-    });
-  }, []);
   const columns = [
     {
       name: 'NO',
@@ -76,15 +44,12 @@ export const Hasil = () => {
       label:'Nama',
       name:'nama',
       selector: (row) => row.nama,
-      options:{
-        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
-      }
       
     },
     {
-      label:"MINAT",
-      name: 'minat',
-      selector: (row) => row.minat,
+      label: 'Ci Ujian Sekolah',
+      name:'ci_ujian_sekolah',
+      selector: (row) => row.ci_ujian_sekolah,
       options: {
         sort: false,
         setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
@@ -92,9 +57,9 @@ export const Hasil = () => {
       },
     },
     {
-      label:'Jurusan SAW',
-      name: 'jurusan_saw',
-      selector: (row) => row.jurusan,
+      label: 'Ci Raport',
+      name:'ci_rerata_raport',
+      selector: (row) => row.ci_rerata_raport,
       options: {
         sort: false,
         setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
@@ -102,9 +67,9 @@ export const Hasil = () => {
       },
     },
     {
-      label:'Jurusan SMART',
-      name: 'jurusan_smart',
-      selector: (row) => row.jurusan,
+      label: 'Ci IPA',
+      name:'ci_ipa',
+      selector: (row) => row.ci_ipa,
       options: {
         sort: false,
         setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
@@ -112,25 +77,68 @@ export const Hasil = () => {
       },
     },
     {
-      label:'ACTION',
-      name: 'aksi',
+      label: 'Ci IPS',
+      name:'ci_ips',
+      selector: (row) => row.ci_ips,
       options: {
-        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center', justifyContent:'center'}}),
-        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
-        filter: false,
         sort: false,
-        customBodyRenderLite: (dataIndex, rowIndex) => {
-          return (
-            <div>
-            <button onClick={() => handleOpenDetail(siswas[dataIndex])} style={{margin: '5px'}}> <VisibilityIcon color='success'/></button> 
-            </div>    
-          );
-       }
-    }
-  }  
+        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
+        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+      },
+    },
+    
+    {
+      label: 'R Ujian Sekolah',
+      name:'r_ujian_sekolah_smart',
+      selector: (row) => row.r_ujian_sekolah,
+      options: {
+        sort: false,
+        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
+        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+      },
+    },
+    {
+      label: 'R Rerata Raport',
+      name:'r_rerata_raport_smart',
+      selector: (row) => row.r_rerata_raport,
+      options: {
+        sort: false,
+        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
+        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+      },
+    },
+    {
+      label: 'R Nilai IPA',
+      name:'r_ipa_smart',
+      selector: (row) => row.r_ipa,
+      options: {
+        sort: false,
+        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
+        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+      },
+    },
+    {
+      label: 'R Nilai IPS',
+      name:'r_ips_smart',
+      selector: (row) => row.r_ips,
+      options: {
+        sort: false,
+        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
+        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+      },
+    },
   ];
 
   
+
+  React.useEffect(() => {
+    axios.get(`${process.env.REACT_APP_BACKEND}/normalisasi`).then((res) => {
+      const response = res.data.message;
+      setSiswas(response);
+      console.log(res);
+    });
+  }, []);
+
   return (
     <Box
       component="main"
@@ -145,20 +153,15 @@ export const Hasil = () => {
           <Grid container spacing={3} >
             <Grid item xs={12} style={styles.titlePage} >
             </Grid>
-            <Grid item xs={12} sx={{ p: 4,}}>
-              <Typography sx={{backgroundColor:"white", textAlign:"center", mb:1,}} variant="h5" color="initial" fontWeight={600}>HASIL AKHIR JURUSAN</Typography>
+            <Grid item xs={12} sx={{ p: 4}}>
+              <Typography sx={{backgroundColor:"white", textAlign:"center", mb:1, width:"100%"}} variant="h5" color="initial" fontWeight={600}>DATA PERHITUNGAN SMART</Typography>
+              
               <MUIDataTable
-                
                 data={siswas}
                 columns={columns}
                 options={options}
               />
-              <DetailNilai
-              handleCloseDetail={handleCloseDetail}
-              openDetail={openDetail}
-              handleSubmit={handleSubmit}
-              siswa = {siswa}
-              />
+              
             </Grid>
           </Grid>
         </Container>
@@ -166,3 +169,5 @@ export const Hasil = () => {
     </Box>
   );
 };
+
+

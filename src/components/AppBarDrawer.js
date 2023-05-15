@@ -1,4 +1,5 @@
 import * as React from 'react';
+import { useState } from 'react';
 import MuiDrawer from '@mui/material/Drawer';
 import { styled } from '@mui/material/styles';
 import { styles } from './styles';
@@ -70,6 +71,72 @@ const AppBar = styled(MuiAppBar, {
   }),
 }));
 
+
+const DataPerhitungan = () => {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  return (
+    <>
+      <IconButton onClick={handleClick} style={{padding:'0px'}}>
+      <Typography style={{ color: 'white', padding:'0px' }}>Data Perhitungan</Typography>
+      </IconButton>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleClose} component={RouterLink} to='/perhitungan'>
+          Perhitungan SAW
+        </MenuItem>
+        <MenuItem onClick={handleClose} component={RouterLink} to='/perhitungansmart'>
+          Perhitungan SMART
+        </MenuItem>
+      </Menu>
+    </>
+  );
+};
+
+const DataPerhitunganIcon = () => {
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  return (
+    <>
+      <IconButton onClick={handleClick} style={{padding:'0px', color:'white'}}>
+      <BarChartIcon/>
+      </IconButton>
+      <Menu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        <MenuItem onClick={handleClose} component={RouterLink} to='/datasiswa'>
+          Perhitungan SAW
+        </MenuItem>
+        <MenuItem onClick={handleClose} component={RouterLink} to='/dashboard'>
+          Perhitungan SMART
+        </MenuItem>
+      </Menu>
+    </>
+  );
+};
+
+
 const Drawer = styled(
   MuiDrawer,
   {}
@@ -107,9 +174,9 @@ function AppBarDrawer() {
       link: '/datakriteria',
     },
     {
-      text: 'Data Perhitungan',
-      icon: <BarChartIcon />,
-      link: '/perhitungan',
+      text: <DataPerhitungan/>,
+      icon:<DataPerhitunganIcon/>,
+      link: '#',
     },
     {
       text: 'Data Hasil',
@@ -133,6 +200,7 @@ function AppBarDrawer() {
 		// Hapus item dari local storage
 		localStorage.removeItem('jwtToken');
 	};
+
   return (
     <div>
       <AppBar
