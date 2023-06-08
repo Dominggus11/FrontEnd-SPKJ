@@ -323,7 +323,7 @@ export const DataSiswa = () => {
     onClose={() => setSnackBarDeleteIsOpen(false)}
     autoHideDuration={5000}>
       <Alert severity="success" sx={{ width: '100%' }}>
-        Data Siswa berhasil Di Update
+        Data Siswa berhasil Di Delete
       </Alert>
 
     </Snackbar>
