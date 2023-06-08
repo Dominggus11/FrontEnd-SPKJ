@@ -42,7 +42,7 @@ export const DataKriteria = () => {
     }
   }
 
-  const handleChange = (event) => {
+  const handleChange = (event, value) => {
     if (event.target.name === 'nama')(
       setKriteria(prev => ({...prev, nama: event.target.value}))
     )
