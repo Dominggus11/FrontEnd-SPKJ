@@ -11,28 +11,55 @@ import { styles } from '../components/styles';
 import { CChart } from '@coreui/react-chartjs';
 const HomePages = () => {
   const [siswas, setSiswas] = React.useState([]);
-  const [jumlahSiswaIPASaw, setjumlahSiswaIPASaw] = React.useState(0);
-  const [jumlahSiswaIPSSaw, setjumlahSiswaIPSSaw] = React.useState(0);
-  const [jumlahSiswaIPASmart, setjumlahSiswaIPASmart] = React.useState(0);
-  const [jumlahSiswaIPSSmart, setjumlahSiswaIPSSmart] = React.useState(0);
+  const [jumlah90Saw, setjumlah90Saw] = React.useState(0);
+  const [jumlah80Saw, setjumlah80Saw] = React.useState(0);
+  const [jumlah70Saw, setjumlah70Saw] = React.useState(0);
+  const [jumlah60Saw, setjumlah60Saw] = React.useState(0);
+  const [jumlah50Saw, setjumlah50Saw] = React.useState(0);
+
+  const [jumlah90Smart, setjumlah90Smart] = React.useState(0);
+  const [jumlah80Smart, setjumlah80Smart] = React.useState(0);
+  const [jumlah70Smart, setjumlah70Smart] = React.useState(0);
+  const [jumlah60Smart, setjumlah60Smart] = React.useState(0);
+  const [jumlah50Smart, setjumlah50Smart] = React.useState(0);
+
   const [jumlahSiswaIPA, setjumlahSiswaIPA] = React.useState(0);
   const [jumlahSiswaIPS, setjumlahSiswaIPS] = React.useState(0);
   React.useEffect(() => {
     axios.get(`${process.env.REACT_APP_BACKEND}/student`).then((res) => {
       const response = res.data.message;
-      // console.log(response);
       const jumlahSiswaIPA = response.filter(siswa => siswa.minat === 'IPA').length;
       const jumlahSiswaIPS = response.filter(siswa => siswa.minat === 'IPS').length;
-      const jumlahSiswaIPASaw = response.filter(siswa => siswa.jurusan_saw === 'IPA').length;
-      const jumlahSiswaIPSSaw = response.filter(siswa => siswa.jurusan_saw === 'IPS').length;
-      const jumlahSiswaIPASmart = response.filter(siswa => siswa.jurusan_smart === 'IPA').length;
-      const jumlahSiswaIPSSmart = response.filter(siswa => siswa.jurusan_smart === 'IPS').length;
+      
+      const jumlah90Saw = response.filter(siswa => siswa.resultVi_saw >=90).length;
+      const jumlah80Saw = response.filter(siswa => siswa.resultVi_saw >=80 && siswa.resultVi_saw <90 ).length;
+      const jumlah70Saw = response.filter(siswa => siswa.resultVi_saw >=70 && siswa.resultVi_saw <80 ).length;
+      const jumlah60Saw = response.filter(siswa => siswa.resultVi_saw >=60 && siswa.resultVi_saw <70 ).length;
+      const jumlah50Saw = response.filter(siswa => siswa.resultVi_saw <60 ).length;
+
+      const jumlah90Smart = response.filter(siswa => siswa.resultVi_smart >=90).length;
+      const jumlah80Smart = response.filter(siswa => siswa.resultVi_smart >=80 && siswa.resultVi_smart <90 ).length;
+      const jumlah70Smart = response.filter(siswa => siswa.resultVi_smart >=70 && siswa.resultVi_smart <80 ).length;
+      const jumlah60Smart = response.filter(siswa => siswa.resultVi_smart >=60 && siswa.resultVi_smart <70 ).length;
+      const jumlah50Smart = response.filter(siswa => siswa.resultVi_smart <60 ).length;
+
+
+
+
       setjumlahSiswaIPA(jumlahSiswaIPA);
       setjumlahSiswaIPS(jumlahSiswaIPS);
-      setjumlahSiswaIPASaw(jumlahSiswaIPASaw);
-      setjumlahSiswaIPSSaw(jumlahSiswaIPSSaw);
-      setjumlahSiswaIPASmart(jumlahSiswaIPASmart);
-      setjumlahSiswaIPSSmart(jumlahSiswaIPSSmart);
+      setjumlah90Saw(jumlah90Saw);
+      setjumlah80Saw(jumlah80Saw);
+      setjumlah70Saw(jumlah70Saw);
+      setjumlah60Saw(jumlah60Saw);
+      setjumlah50Saw(jumlah50Saw);
+
+
+      setjumlah90Smart(jumlah90Smart);
+      setjumlah80Smart(jumlah80Smart);
+      setjumlah70Smart(jumlah70Smart);
+      setjumlah60Smart(jumlah60Smart);
+      setjumlah50Smart(jumlah50Smart);
 
         axios.get(`${process.env.REACT_APP_BACKEND}/normalisasi`).then((res) => {
           const response = res.data.message;
@@ -40,7 +67,7 @@ const HomePages = () => {
           console.log(res);
         });
     });
-  }, [jumlahSiswaIPASaw, jumlahSiswaIPSSaw, jumlahSiswaIPASmart, jumlahSiswaIPSSmart, jumlahSiswaIPA, jumlahSiswaIPS]);
+  }, [jumlah90Saw, jumlah80Saw,jumlah70Saw,jumlah60Saw, jumlah50Saw, jumlah90Smart, jumlah80Smart,jumlah70Smart, jumlah60Smart, jumlah50Smart ,jumlahSiswaIPA, jumlahSiswaIPS]);
   
   return (
     <>
@@ -54,13 +81,7 @@ const HomePages = () => {
     >
       <Toolbar />
       <Container maxWidth="lg" sx={{ mt: 4, mb: 4 }}>
-        {/* <Grid container spacing={3}>
-          <Grid item xs={12} style={styles.titlePage}>
-            <Typography variant="h5" color="initial" fontWeight={600}>
-              Home Page
-            </Typography>
-          </Grid>
-        </Grid> */}
+  
         <Grid container spacing={3} >
           <Grid item xs={12} style={styles.PageSPK} marginTop="10px">
             <Typography variant="h3" color="initial" fontWeight={600} >
@@ -92,11 +113,11 @@ const HomePages = () => {
     <CChart
       type="doughnut"
       data={{
-        labels: ['IPA', 'IPS'],
+        labels: ['Nilai 90-100', 'Nilai 80-89','Nilai 70-79', 'Nilai 60-69', 'Nilai <60'],
         datasets: [
           {
-            backgroundColor: ['#41B883', '#00D8FF'],
-            data: [jumlahSiswaIPASaw, jumlahSiswaIPSSaw],
+            backgroundColor: ['#4aed00', '#2557ff', '#f8fe00','#fe0101', '#fb6c03'],
+            data: [jumlah90Saw, jumlah80Saw,jumlah70Saw, jumlah60Saw, jumlah50Saw],
           },
         ],
       }}
@@ -117,11 +138,11 @@ const HomePages = () => {
     <CChart
       type="polarArea"
       data={{
-        labels: ['IPA', 'IPS'],
+        labels: ['Nilai 90-100', 'Nilai 80-89','Nilai 70-79', 'Nilai 60-69', 'Nilai <60'],
         datasets: [
           {
-            backgroundColor: ['#41B883', '#00D8FF'],
-            data: [jumlahSiswaIPASmart, jumlahSiswaIPSSmart],
+            backgroundColor: ['#4aed00', '#2557ff', '#f8fe00','#fe0101', '#fb6c03'],
+            data: [jumlah90Smart, jumlah80Smart,jumlah70Smart, jumlah60Smart, jumlah50Smart],
           },
         ],
       }}
@@ -145,7 +166,7 @@ const HomePages = () => {
         labels: ['IPA', 'IPS'],
         datasets: [
           {
-            backgroundColor: ['#41B883', '#00D8FF'],
+            backgroundColor: ['#2557ff', '#f8fe00'],
             data: [jumlahSiswaIPA, jumlahSiswaIPS],
           },
         ],

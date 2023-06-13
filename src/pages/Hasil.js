@@ -92,42 +92,42 @@ export const Hasil = () => {
       },
     },
     {
-      label:'Jurusan SAW',
-      name: 'jurusan_saw',
+      label:'HASIL SAW',
+      name: 'resultVi_saw',
       selector: (row) => row.jurusan,
       options: {
-        sort: false,
+        // sort: false,
         setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
         setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
       },
     },
     {
-      label:'Jurusan SMART',
-      name: 'jurusan_smart',
+      label:'HASIL SMART',
+      name: 'resultVi_smart',
       selector: (row) => row.jurusan,
       options: {
-        sort: false,
+        // sort: false,
         setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
         setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
       },
     },
-    {
-      label:'ACTION',
-      name: 'aksi',
-      options: {
-        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center', justifyContent:'center'}}),
-        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
-        filter: false,
-        sort: false,
-        customBodyRenderLite: (dataIndex, rowIndex) => {
-          return (
-            <div>
-            <button onClick={() => handleOpenDetail(siswas[dataIndex])} style={{margin: '5px'}}> <VisibilityIcon color='success'/></button> 
-            </div>    
-          );
-       }
-    }
-  }  
+    // {
+    //   label:'ACTION',
+    //   name: 'aksi',
+    //   options: {
+    //     setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center', justifyContent:'center'}}),
+    //     setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
+    //     filter: false,
+    //     sort: false,
+    //     customBodyRenderLite: (dataIndex, rowIndex) => {
+    //       return (
+    //         <div>
+    //         <button onClick={() => handleOpenDetail(siswas[dataIndex])} style={{margin: '5px'}}> <VisibilityIcon color='success'/></button> 
+    //         </div>    
+    //       );
+    //    }
+    // }
+  // }  
   ];
 
 

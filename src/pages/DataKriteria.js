@@ -31,21 +31,8 @@ export const DataKriteria = () => {
   const handleSubmit = (event, type) => {
     event.preventDefault()
     if (type === 'update') {
-      // axios.put(`${process.env.REACT_APP_BACKEND}/kriteria/${kriteria.id}`, {nama: kriteria.nama, bobot: kriteria.bobot})
-      //   .then(response => {
-      //     const res = kriteria.bobot;
-      //     console.log(res)
-      //     setKriteria(res)
-      //     console.log(response.data.data);
-      //     console.log(kriteria.id)
-      //     handleCloseUpdate()
-      //   });
-
-      // console.log(event.target);
       axios.put(`${process.env.REACT_APP_BACKEND}/kriteria/${kriteria.id}`, {nama: kriteria.nama, bobot: kriteria.bobot})
   .then(response => {
-    // ...
-    // Perbarui state kriterias dengan data terbaru
     setKriterias(prevKriterias => {
       const updatedKriterias = prevKriterias.map(kriteria => {
         if (kriteria.id === response.data.data.id) {
@@ -68,10 +55,6 @@ export const DataKriteria = () => {
       setKriteria(prev => ({...prev, bobot: parseFloat(event.target.value)}))
     )
     console.log(event.target.name)
-    // else if (event  === 'first')(
-    //   console.log(event)
-    // )
-    
   }
 
   const handleChangecheckbox = (data) => {

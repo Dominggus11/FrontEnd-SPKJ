@@ -37,8 +37,6 @@ function CreateSiswa({handleCloseCreate, openCreate, handleSubmit, siswa, handle
           <TextField size='small' required type={'number'}  label="Ujian Sekolah" value={siswa?.ujian_sekolah} name='ujian_sekolah' onChange={handleChange} variant='outlined'/>
           <TextField size='small' required type={'number'} label="Rerata raport" value={siswa?.rerata_raport} name='rerata_raport' onChange={handleChange} variant='outlined'/>
           <TextField size='small' required type={'number'} label="Nilai IPA" value={siswa?.ipa} name='ipa' onChange={handleChange} variant='outlined'/>
-          <TextField size='small' required type={'number'} label="Nilai IPS" value={siswa?.ips} name='ips' onChange={handleChange} variant='outlined'/>
-          {/* <TextField size='small' required  label="Minat Siswa" value={siswa?.minat} name='minat' onChange={handleChange} variant='outlined'/> */}
           <Autocomplete
             options={options}
             value={siswa?.minat}

@@ -59,7 +59,7 @@ export const DataSiswa = () => {
 
     if (type === 'create') {
       
-      axios.post(`${process.env.REACT_APP_BACKEND}/student`, {nama: siswa.nama, nisn: siswa.nisn, ujian_sekolah: siswa.ujian_sekolah, rerata_raport: siswa.rerata_raport, ipa: siswa.ipa, ips: siswa.ips, minat: siswa.minat})
+      axios.post(`${process.env.REACT_APP_BACKEND}/student`, {nama: siswa.nama, nisn: siswa.nisn, ujian_sekolah: siswa.ujian_sekolah, rerata_raport: siswa.rerata_raport, ipa: siswa.ipa, minat: siswa.minat})
         .then(res => {
           const response = res.data.message;
           console.log(res.data.message);
@@ -77,7 +77,7 @@ export const DataSiswa = () => {
 
     }
     else if (type === 'update') {
-      axios.put(`${process.env.REACT_APP_BACKEND}/student/${siswa.ID}`, {nama: siswa.nama, nisn: siswa.nisn, ujian_sekolah: siswa.ujian_sekolah, rerata_raport: siswa.rerata_raport, ipa: siswa.ipa, ips: siswa.ips, minat: siswa.minat})
+      axios.put(`${process.env.REACT_APP_BACKEND}/student/${siswa.ID}`, {nama: siswa.nama, nisn: siswa.nisn, ujian_sekolah: siswa.ujian_sekolah, rerata_raport: siswa.rerata_raport, ipa: siswa.ipa, minat: siswa.minat})
         .then(res => {
           const response = res.data.message;
           setSiswas(response);
@@ -124,9 +124,6 @@ export const DataSiswa = () => {
     )
     else if (event.target.name === 'ipa')(
       setSiswa(prev => ({...prev, ipa: parseFloat(event.target.value)}))
-    )
-    else if (event.target.name === 'ips')(
-      setSiswa(prev => ({...prev, ips: parseFloat(event.target.value)}))
     )
     else (
       setSiswa(prev => ({...prev, minat: value}))
@@ -190,16 +187,6 @@ export const DataSiswa = () => {
       label:'IPA',
       name: 'ipa',
       selector: (row) => row.ipa,
-      options: {
-        sort: false,
-        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
-        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
-      },
-    },
-    {
-      label:'IPS',
-      name: 'ips',
-      selector: (row) => row.ips,
       options: {
         sort: false,
         setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),

@@ -77,17 +77,6 @@ export const Perhitungan = () => {
       },
     },
     {
-      label: 'Ci IPS',
-      name:'ci_ips',
-      selector: (row) => row.ci_ips,
-      options: {
-        sort: false,
-        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
-        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
-      },
-    },
-    
-    {
       label: 'R Ujian Sekolah',
       name:'r_ujian_sekolah_saw',
       selector: (row) => row.r_ujian_sekolah,
@@ -111,16 +100,6 @@ export const Perhitungan = () => {
       label: 'R Nilai IPA',
       name:'r_ipa_saw',
       selector: (row) => row.r_ipa,
-      options: {
-        sort: false,
-        setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
-        setCellHeaderProps: () => ({ style: { textAlign:'center', justifyContent:'center', float:'end' }}),
-      },
-    },
-    {
-      label: 'R Nilai IPS',
-      name:'r_ips_saw',
-      selector: (row) => row.r_ips,
       options: {
         sort: false,
         setCellProps: () => ({ style: { minWidth: "100px", maxWidth: "800px", textAlign:'center'}}),
