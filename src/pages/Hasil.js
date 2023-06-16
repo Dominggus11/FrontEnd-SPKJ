@@ -5,14 +5,21 @@ import {
   Toolbar,
   Grid,
   Container,
+  Snackbar,
+  Alert
 } from '@mui/material';
 import { styles } from '../components/styles';
 import axios from '../api/axios';
 import MUIDataTable from 'mui-datatables';
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import DetailNilai from './DetailNilai';
+import { useNavigate } from 'react-router-dom';
 
 export const Hasil = () => {
+  const [totalWeightActive, setTotalWeightActive] = React.useState(0);
+  const navigate = useNavigate();
+  const [error, setError] = React.useState(null);
+  const [kriterias, setKriterias] = React.useState([]);
   const [siswas, setSiswas] = React.useState([]);
   const [siswa, setSiswa] = React.useState(null);
   const handleCloseDetail = () => setOpenDetail(false); 
@@ -138,6 +145,31 @@ export const Hasil = () => {
       console.log(res);
     });
   }, []);
+
+  React.useEffect(() => {
+    axios.get(`${process.env.REACT_APP_BACKEND}/kriteria`).then(res => {
+      const responseKriterias = res.data.message;
+      console.log(responseKriterias);
+      setKriterias(responseKriterias);
+  
+      const totalWeightActive = responseKriterias.reduce((sum, kriteria) => {
+        if (kriteria.is_active === 1) {
+          return sum + kriteria.bobot;
+        }
+        return sum;
+      }, 0);
+      setTotalWeightActive(totalWeightActive);
+      console.log(totalWeightActive)
+  
+      
+      if (totalWeightActive !== 100) {
+        setError('Total bobot kriteria harus sama dengan 100.');
+        navigate('/datakriteria');
+      }
+  
+      
+    });
+  }, [setKriterias, navigate]);
   return (
     <Box
       component="main"
@@ -166,6 +198,19 @@ export const Hasil = () => {
               handleSubmit={handleSubmit}
               siswa = {siswa}
               />
+
+            {error && (
+              <Snackbar
+                open={true}
+                autoHideDuration={5000}
+                onClose={() => setError(null)}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+              >
+                <Alert onClose={() => setError(null)} severity="error">
+                  {error}
+                </Alert>
+              </Snackbar>
+            )}
             </Grid>
           </Grid>
         </Container>

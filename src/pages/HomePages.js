@@ -5,11 +5,18 @@ import {
   Box,
   Container,
   Grid,
+  Snackbar,
+  Alert
 } from '@mui/material';
 import axios from '../api/axios';
 import { styles } from '../components/styles';
 import { CChart } from '@coreui/react-chartjs';
+import { useNavigate } from 'react-router-dom';
 const HomePages = () => {
+  const [totalWeightActive, setTotalWeightActive] = React.useState(0);
+  const navigate = useNavigate();
+  const [error, setError] = React.useState(null);
+  const [kriterias, setKriterias] = React.useState([]);
   const [siswas, setSiswas] = React.useState([]);
   const [jumlah90Saw, setjumlah90Saw] = React.useState(0);
   const [jumlah80Saw, setjumlah80Saw] = React.useState(0);
@@ -69,6 +76,30 @@ const HomePages = () => {
     });
   }, [jumlah90Saw, jumlah80Saw,jumlah70Saw,jumlah60Saw, jumlah50Saw, jumlah90Smart, jumlah80Smart,jumlah70Smart, jumlah60Smart, jumlah50Smart ,jumlahSiswaIPA, jumlahSiswaIPS]);
   
+  React.useEffect(() => {
+    axios.get(`${process.env.REACT_APP_BACKEND}/kriteria`).then(res => {
+      const responseKriterias = res.data.message;
+      console.log(responseKriterias);
+      setKriterias(responseKriterias);
+  
+      const totalWeightActive = responseKriterias.reduce((sum, kriteria) => {
+        if (kriteria.is_active === 1) {
+          return sum + kriteria.bobot;
+        }
+        return sum;
+      }, 0);
+      setTotalWeightActive(totalWeightActive);
+      console.log(totalWeightActive)
+  
+      
+      if (totalWeightActive !== 100) {
+        setError('Total bobot kriteria harus sama dengan 100.');
+        navigate('/datakriteria');
+      }
+  
+      
+    });
+  }, [setKriterias, navigate]);
   return (
     <>
     
@@ -176,6 +207,7 @@ const HomePages = () => {
     </Box>
     </Box>
     </>
+    
   );
 };
 export default HomePages;

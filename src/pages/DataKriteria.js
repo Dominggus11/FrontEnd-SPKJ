@@ -5,19 +5,43 @@ import {
   Toolbar,
   Grid,
   Container,
+  Snackbar,
+  Alert
 } from '@mui/material';
 import { styles } from '../components/styles';
 import axios from '../api/axios';
 import CreateIcon from '@mui/icons-material/Create';
 import MUIDataTable from 'mui-datatables';
 import UpdateCriteria from './UpdateCriteria';
+import { useNavigate } from 'react-router-dom';
 
 export const DataKriteria = () => {
+  const [totalWeightActive, setTotalWeightActive] = useState(0);
+  const navigate = useNavigate();
+  const [error, setError] = React.useState(null);
   const [kriterias, setKriterias] = React.useState([]);
   const [kriteria, setKriteria] = useState(null);
   const [openUpdate, setOpenUpdate] = React.useState(false);
   const handleCloseUpdate = () => setOpenUpdate(false); 
-  // const [siswas, setSiswas] = React.useState([]);
+  
+  const checkTotalWeightActive = () => {
+    const totalWeightActive = kriterias.reduce((sum, kriteria) => {
+      if (kriteria.is_active === 1) {
+        return sum + kriteria.bobot;
+      }
+      return sum;
+    }, 0);
+  
+    setTotalWeightActive(totalWeightActive);
+  
+    if (totalWeightActive !== 100) {
+      setError('Total bobot kriteria harus sama dengan 100.');
+      navigate('/datakriteria');
+    } else {
+      setError(null);
+    }
+  };
+  
   const handleOpenUpdate = (kriteria) => {
     setKriteria(kriteria)
     console.log(kriteria)
@@ -43,6 +67,7 @@ export const DataKriteria = () => {
       return updatedKriterias;
     });
     handleCloseUpdate();
+    checkTotalWeightActive();
   });
   }
   }
@@ -87,6 +112,7 @@ export const DataKriteria = () => {
       });
     console.log(kriterias);
     console.log(data);
+    checkTotalWeightActive(); // Check total weight of active criteria
   };
 
   const columns = [
@@ -164,12 +190,30 @@ export const DataKriteria = () => {
 },
 ];
 
-  React.useEffect(() => {
-    axios.get(`${process.env.REACT_APP_BACKEND}/kriteria`).then((res) => {
-      const responseKriterias = res.data.message;
-      setKriterias(responseKriterias);
-    });
-  }, [setKriterias]);
+React.useEffect(() => {
+  axios.get(`${process.env.REACT_APP_BACKEND}/kriteria`).then(res => {
+    const responseKriterias = res.data.message;
+    console.log(responseKriterias);
+    setKriterias(responseKriterias);
+
+    const totalWeightActive = responseKriterias.reduce((sum, kriteria) => {
+      if (kriteria.is_active === 1) {
+        return sum + kriteria.bobot;
+      }
+      return sum;
+    }, 0);
+    setTotalWeightActive(totalWeightActive);
+    console.log(totalWeightActive)
+
+    
+    if (totalWeightActive !== 100) {
+      setError('Total bobot kriteria harus sama dengan 100.');
+      navigate('/datakriteria');
+    }
+
+    
+  });
+}, [setKriterias, navigate]);
 
   return (
     <Box
@@ -200,6 +244,19 @@ export const DataKriteria = () => {
                handleChange={handleChange}
                kriteria = {kriteria}
                />
+
+            {error && (
+              <Snackbar
+                open={true}
+                autoHideDuration={5000}
+                onClose={() => setError(null)}
+                anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+              >
+                <Alert onClose={() => setError(null)} severity="error">
+                  {error}
+                </Alert>
+              </Snackbar>
+            )}
             </Grid>
           </Grid>
         </Container>
